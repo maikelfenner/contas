@@ -4,5 +4,11 @@ jdk:
 
 script: "mvn cobertura:cobertura"
 
+deploy:
+  provider: heroku
+  api-key:
+    secure: $HEROKU_API_KEY
+  app: contas
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
