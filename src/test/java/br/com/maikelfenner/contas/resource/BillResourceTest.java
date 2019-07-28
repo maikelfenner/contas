@@ -39,7 +39,30 @@ public class BillResourceTest extends ContasApplicationTest {
     }
 
     @Test
-    public void deve_buscar_todos_cliente_cadastrados() throws Exception {
+    public void shouldThrowAnErrorWhenSavingBillWithInvalidName() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("name", "");
+        params.put("value", "100");
+        params.put("dueDate", "2019-07-10");
+        params.put("paymentDate", "2019-07-15");
+
+        RestAssured.given()
+                .request()
+                .header("Accept", ContentType.ANY)
+                .header("Content-type", ContentType.JSON)
+                .body(params)
+                .when()
+                .post("/bill")
+                .then()
+                .log().headers()
+                .log().body()
+                .and()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("error", equalTo("Name is mandatory"));
+    }
+
+    @Test
+    public void shouldListAllBills() throws Exception {
         RestAssured.given()
                 .request()
                 .header("Accept", ContentType.ANY)

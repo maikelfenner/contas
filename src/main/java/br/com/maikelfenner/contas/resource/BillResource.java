@@ -37,7 +37,7 @@ public class BillResource {
         List<Bill> bills = billService.findAll();
 
         return bills.stream()
-                .map(bill -> converter.convert(bill))
+                .map(converter::convert)
                 .collect(Collectors.toList());
     }
 
